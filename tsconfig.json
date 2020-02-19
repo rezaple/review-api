@@ -2,10 +2,11 @@
   "compilerOptions": {
     "outDir": "./build",
     "module": "commonjs",
+    "allowJs": true,
     "target": "es6"
   },
   "include": [
-    "./src"
+    "src"
   ],
   "exclude": [
     "node_modules"

@@ -1,0 +1,10 @@
+import * as del from 'del';
+
+const imageFilter = function (req, file, cb) {
+    // accept image only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+export { imageFilter }

@@ -1,33 +1,29 @@
-import { Router, Request, Response, NextFunction} from 'express';
-import User from '../models/User';
+import { Request, Response, NextFunction } from 'express';
+import auth from '../middlewares/AuthMiddleware';
+import BaseRoutes from './BaseRoutes'
+const models = require('../models/');
 
-class UserRouter {
-  router: Router;
-  constructor() {
-    this.router = Router();
-    this.routes();
-  }
+class UserRouter extends BaseRoutes {
 
-  public index(req: Request, res: Response): void {
-    User.find().then(result => {
-      res.status(200).json(result);
+  public async index(req: Request, res: Response): Promise<Response> {
+    const { id } = req.app.locals.credential.data;
+    const user = await models.User.findOne({
+      where: {id},
+      attributes: ['id','name','email','profile_picture']
+    });
+    return res.send({
+      status:200,
+      data: user
     });
   }
 
-  public store(req: Request, res: Response): void {
-    
-  }
-
-  public update(req: Request, res: Response): void {
-    
-  }
-
-  public delete(req: Request, res: Response): void {
-    
+  public async test(req: Request, res: Response): Promise<Response> {
+    return res.send(req.body);
   }
 
   routes() {
-    this.router.get('/', this.index);
+    this.router.get('/', auth, this.index);
+    this.router.post('/test', this.test);
   }
 }
 
